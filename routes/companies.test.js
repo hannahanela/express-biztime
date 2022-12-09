@@ -17,6 +17,10 @@ beforeEach(async function () {
   testCompany = result.rows[0];
 });
 
+afterAll(async function () {
+  await db.end();
+});
+
 /** GET /companies - get data about many companies
  *    return '{companies: [company, ...]}'
  */
