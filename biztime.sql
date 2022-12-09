@@ -1,9 +1,9 @@
-\echo 'Delete and recreate biztime db?'
+\echo 'Delete and recreate biztime_2 db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
-DROP DATABASE IF EXISTS biztime;
-CREATE DATABASE biztime;
-\connect biztime;
+DROP DATABASE IF EXISTS biztime_2;
+CREATE DATABASE biztime_2;
+\connect biztime_2;
 
 
 CREATE TABLE companies (
@@ -32,12 +32,12 @@ VALUES ('apple', 100, FALSE, NULL),
        ('ibm', 400, FALSE, NULL);
 
 
-\echo 'Delete and recreate biztime_test db?'
+\echo 'Delete and recreate biztime_2_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
-DROP DATABASE IF EXISTS biztime_test;
-CREATE DATABASE biztime_test;
-\connect biztime_test;
+DROP DATABASE IF EXISTS biztime_2_test;
+CREATE DATABASE biztime_2_test;
+\connect biztime_2_test;
 
 CREATE TABLE companies (
   code TEXT PRIMARY KEY,
