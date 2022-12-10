@@ -54,7 +54,7 @@ describe("GET /companies/:code", function () {
     expect(resp.statusCode).toEqual(404);
     expect(resp.body).toEqual({
       error: {
-        message: "No such company.",
+        message: "No such company",
         status: 404,
       },
     });
