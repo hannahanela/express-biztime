@@ -78,7 +78,7 @@ describe("POST /companies", function () {
       company: newCo,
     });
 
-    const getCompanyResp = await request(app).get(`/cats/${newCo.code}`);
+    const getCompanyResp = await request(app).get(`/companies/${newCo.code}`);
 
     expect(getCompanyResp.body).toEqual({
       company: { ...newCo },
@@ -171,6 +171,18 @@ describe("DELETE /companies/:code", function () {
 
     expect(getCompanyResp.statusCode).toEqual(404);
     expect(getCompanyResp.body).toEqual({
+      error: {
+        message: "No such company",
+        status: 404,
+      },
+    });
+  });
+
+  it("Responds with 404 if code invalid", async function () {
+    const resp = await request(app).delete("/companies/noco").put(updatedCo);
+
+    expect(resp.statusCode).toEqual(404);
+    expect(resp.body).toEqual({
       error: {
         message: "No such company",
         status: 404,
