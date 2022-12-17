@@ -40,6 +40,7 @@ router.get("/:code", async function (req, res, next) {
 });
 
 /** POST /companies - create new company from data
+ *    data {code, name, description}
  *    return '{company: {code, name, description}}'
  */
 router.post("/", async function (req, res, next) {
@@ -58,8 +59,35 @@ router.post("/", async function (req, res, next) {
     [code, name, description]
   );
   const company = result.rows[0];
-  console.log("result=", result);
   return res.status(201).json({ company });
+});
+
+/** PUT /companies/:code - update existing company
+ *    data {name, description}
+ *    return '{company: {code, name, description}}'
+ */
+router.put("/:code", async function (req, res, next) {
+  const code = req.params.code;
+  const { name, description } = req.body;
+
+  if (!name || !description) {
+    throw new BadRequestError("Missing required data");
+  }
+
+  const result = await db.query(
+    `UPDATE companies
+            SET name=$1,
+                description=$2
+            WHERE code=$3
+            RETURNING code, name, description`,
+    [name, description, code]
+  );
+
+  const company = result.rows[0];
+  if (!company) {
+    throw new NotFoundError("No such company");
+  }
+  return res.json({ company });
 });
 
 module.exports = router;
