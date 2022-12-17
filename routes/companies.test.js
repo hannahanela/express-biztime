@@ -114,34 +114,37 @@ describe("POST /companies", function () {
 /** PUT /companies/:code - updates an existing company
  *    return '{company: {code, name, description}}'
  */
-describe("PUT /company/:code", function () {
+describe("PUT /companies/:code", function () {
   it("Updates a single company", async function () {
     const updatedCo = {
-      code: "updateco",
       name: "Update Test Company",
       description: "Updater of Companies",
     };
     const resp = await request(app)
-      .put(`/companies/${testCompany}`)
+      .put(`/companies/${testCompany.code}`)
       .send(updatedCo);
 
     expect(resp.statusCode).toEqual(200);
     expect(resp.body).toEqual({
-      company: { ...updatedCo },
+      company: { ...updatedCo, code: testCompany.code },
     });
 
     const getCompanyResp = await request(app).get(
-      `/companies/${updatedCo.code}`
+      `/companies/${testCompany.code}`
     );
 
     expect(getCompanyResp.statusCode).toEqual(200);
     expect(getCompanyResp.body).toEqual({
-      company: { ...updatedCo },
+      company: { ...updatedCo, code: testCompany.code },
     });
   });
 
   it("Responds with 404 if code invalid", async function () {
-    const resp = await request(app).put("/companies/noco").put(updatedCo);
+    const updatedCo = {
+      name: "Update Test Company",
+      description: "Updater of Companies",
+    };
+    const resp = await request(app).put("/companies/noco").send(updatedCo);
 
     expect(resp.statusCode).toEqual(404);
     expect(resp.body).toEqual({
@@ -179,7 +182,7 @@ describe("DELETE /companies/:code", function () {
   });
 
   it("Responds with 404 if code invalid", async function () {
-    const resp = await request(app).delete("/companies/noco").put(updatedCo);
+    const resp = await request(app).delete("/companies/noco");
 
     expect(resp.statusCode).toEqual(404);
     expect(resp.body).toEqual({
