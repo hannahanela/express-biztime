@@ -90,4 +90,23 @@ router.put("/:code", async function (req, res, next) {
   return res.json({ company });
 });
 
+/** DELETE /companies/:code - delete existing company
+ *    return '{status: "deleted"}'
+ */
+router.delete("/:code", async function (req, res, next) {
+  const code = req.params.code;
+  const result = await db.query(
+    `DELETE
+        FROM companies 
+        WHERE code=$1
+        RETURNING code`,
+    [code],
+  );
+  const company = result.rows[0];
+  if (!company) {
+    throw new NotFoundError("No such company");
+  }
+  return res.json({ status: "deleted" });
+});
+
 module.exports = router;
