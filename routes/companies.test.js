@@ -35,6 +35,8 @@ describe("GET /companies", function () {
   });
 });
 
+// FIXME: UPDATE GET /companies/:code TO INCLUDE INVOICES [ID, ...]
+
 /** GET /companies/:code - get data about one company
  *    return '{company: {code, name, description}}'
  */
